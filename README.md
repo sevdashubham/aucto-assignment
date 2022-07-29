@@ -5,11 +5,15 @@
 Clone this repository
 
 Backend[port 3333]:
+
 Run `yarn` , all required components will be installed automatically.
+
 Run `yarn start`
 
 Frontend[port 3000]:
+
 Run `yarn` , all required components will be installed automatically.
+
 Run `yarn dev`
 
 # Features
