@@ -6,8 +6,15 @@ export declare class BooksController {
     addProduct(bookDto: BookRouteDto): {
         id: any;
     };
-    getAllBooks(): Promise<import("./book.model").Book[]>;
+    getAllBooks(): Promise<{
+        avgRating: number;
+        id: string;
+        name: string;
+        description: string;
+        authorId: string;
+    }[]>;
     getBook(bookId: string): {
+        review: import("../reviews/review.model").Review[];
         id: string;
         name: string;
         description: string;

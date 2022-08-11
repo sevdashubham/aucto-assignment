@@ -1,12 +1,20 @@
 import { OnModuleInit } from '@nestjs/common';
-import { Book } from './book.model';
+import { Review } from '../reviews/review.model';
 export declare class BooksService implements OnModuleInit {
     private readonly authorsService;
+    private readonly reviewsService;
     private books;
     onModuleInit(): void;
     insertBook(title: string, desc: string, authorId: string): any;
-    getBooks(): Book[];
+    getBooks(): {
+        avgRating: number;
+        id: string;
+        name: string;
+        description: string;
+        authorId: string;
+    }[];
     getSingleBook(bookId: string): {
+        review: Review[];
         id: string;
         name: string;
         description: string;

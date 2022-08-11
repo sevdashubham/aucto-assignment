@@ -12,11 +12,12 @@ const app_controller_1 = require("./app.controller");
 const app_service_1 = require("./app.service");
 const books_module_1 = require("./books/books.module");
 const authors_module_1 = require("./authors/authors.module");
+const reviews_module_1 = require("./reviews/reviews.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [books_module_1.BooksModule, authors_module_1.AuthorsModule],
+        imports: [books_module_1.BooksModule, authors_module_1.AuthorsModule, reviews_module_1.ReviewsModule],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })

@@ -14,6 +14,7 @@ const common_1 = require("@nestjs/common");
 const uuid_1 = require("uuid");
 const book_model_1 = require("./book.model");
 const authors_service_1 = require("../authors/authors.service");
+const reviews_service_1 = require("../reviews/reviews.service");
 let BooksService = class BooksService {
     constructor() {
         this.books = [];
@@ -32,14 +33,18 @@ let BooksService = class BooksService {
         return bookId;
     }
     getBooks() {
-        return [...this.books];
+        return this.books.map(book => {
+            const average = this.reviewsService.getAverageRatingByBookId(book.id);
+            return Object.assign(Object.assign({}, book), { avgRating: average ? average : 0 });
+        });
     }
     getSingleBook(bookId) {
         const book = this.findBook(bookId)[0];
-        return Object.assign({}, book);
+        const review = this.findBook(bookId)[1];
+        return Object.assign(Object.assign({}, book), { review });
     }
     deleteBook(bookId) {
-        const index = this.findBook(bookId)[1];
+        const index = this.findBook(bookId)[2];
         this.books.splice(index, 1);
     }
     async seedData() {
@@ -55,16 +60,21 @@ let BooksService = class BooksService {
     findBook(id) {
         const bookIndex = this.books.findIndex(book => book.id === id);
         const book = this.books[bookIndex];
+        const review = this.reviewsService.getReviewsByBookId(id);
         if (!book) {
             throw new common_1.NotFoundException('Could not find book.');
         }
-        return [book, bookIndex];
+        return [book, review, bookIndex];
     }
 };
 __decorate([
     (0, common_1.Inject)(authors_service_1.AuthorsService),
     __metadata("design:type", authors_service_1.AuthorsService)
 ], BooksService.prototype, "authorsService", void 0);
+__decorate([
+    (0, common_1.Inject)((0, common_1.forwardRef)(() => reviews_service_1.ReviewsService)),
+    __metadata("design:type", reviews_service_1.ReviewsService)
+], BooksService.prototype, "reviewsService", void 0);
 BooksService = __decorate([
     (0, common_1.Injectable)()
 ], BooksService);

@@ -11,13 +11,15 @@ const common_1 = require("@nestjs/common");
 const books_controller_1 = require("./books.controller");
 const books_service_1 = require("./books.service");
 const authors_module_1 = require("../authors/authors.module");
+const reviews_module_1 = require("../reviews/reviews.module");
 let BooksModule = class BooksModule {
 };
 BooksModule = __decorate([
     (0, common_1.Module)({
-        imports: [authors_module_1.AuthorsModule],
+        imports: [authors_module_1.AuthorsModule, (0, common_1.forwardRef)(() => reviews_module_1.ReviewsModule)],
         controllers: [books_controller_1.BooksController],
         providers: [books_service_1.BooksService],
+        exports: [books_service_1.BooksService]
     })
 ], BooksModule);
 exports.BooksModule = BooksModule;
