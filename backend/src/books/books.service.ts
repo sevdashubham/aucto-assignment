@@ -1,12 +1,16 @@
-import { Inject, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { Book } from './book.model';
 import { AuthorsService } from '../authors/authors.service';
+import { ReviewsService } from '../reviews/reviews.service';
+import { Review } from '../reviews/review.model';
 
 @Injectable()
 export class BooksService implements OnModuleInit {
   @Inject(AuthorsService)
   private readonly authorsService: AuthorsService;
+  @Inject(forwardRef(() => ReviewsService))
+  private readonly reviewsService: ReviewsService;
   private books: Book[] = [];
 
   onModuleInit() {
@@ -25,16 +29,22 @@ export class BooksService implements OnModuleInit {
   }
 
   getBooks() {
-    return [...this.books];
+    return this.books.map(book => {
+      const average = this.reviewsService.getAverageRatingByBookId(book.id)
+      return {
+        ...book, avgRating: average ? average : 0
+      }
+    })
   }
 
   getSingleBook(bookId: string) {
     const book = this.findBook(bookId)[0];
-    return { ...book };
+    const review = this.findBook(bookId)[1];
+    return { ...book, review };
   }
 
   deleteBook(bookId: string) {
-    const index = this.findBook(bookId)[1];
+    const index = this.findBook(bookId)[2];
     this.books.splice(index, 1);
   }
 
@@ -49,12 +59,13 @@ export class BooksService implements OnModuleInit {
     });
   }
 
-  private findBook(id: string): [Book, number] {
+  private findBook(id: string): [Book, Review[], number] {
     const bookIndex = this.books.findIndex(book => book.id === id);
     const book = this.books[bookIndex];
+    const review = this.reviewsService.getReviewsByBookId(id)
     if (!book) {
       throw new NotFoundException('Could not find book.');
     }
-    return [book, bookIndex];
+    return [book, review, bookIndex];
   }
 }
