@@ -8,6 +8,7 @@ import Background from '../src/components/Background';
 import BlobAnimate from '../src/components/BlobAnimate';
 import TextSection from '../src/components/TextSection';
 import Row from '../src/components/Row';
+import Review from '../src/components/Review';
 
 interface IResponseServerSide {
   books: IBookProps[];
@@ -33,15 +34,18 @@ const Books: NextPage<IResponseServerSide> = ({ books, authors }) => (
             {books?.map((book, index) => {
               const authorIndex = authors.findIndex(author => author.id === book.authorId);
               return (
+                <>
                 <Row
                   key={book.id}
                   id={book.id}
                   index={index}
                   name={book.name}
-                  rating={book.rating}
+                  avgRating={book.avgRating}
                   description={book.description}
                   authorName={authorIndex > -1 ? authors[authorIndex].name: ''}
                 />
+                <Review bookId={book.id}/>
+                </>
               )
             })}
           </CardRowWrapper>
@@ -54,9 +58,8 @@ const Books: NextPage<IResponseServerSide> = ({ books, authors }) => (
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data: books } = await axios.get("/books");
   const { data: authors } = await axios.get("/authors");
-  const booksWithRatings = books.map(book => ({...book, rating: 4}));
   return {
-    props: { books: booksWithRatings, authors },
+    props: { books, authors },
   };
 };
 

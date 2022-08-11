@@ -10,9 +10,8 @@ const Row: FC<IBookCardProps> = ({
                                    description,
                                    authorName,
                                    index,
-  rating
+                                   avgRating
                                  }: IBookCardProps) => {
-
   return (
     <Wrapper>
       <NumberWrapper>
@@ -21,7 +20,7 @@ const Row: FC<IBookCardProps> = ({
       <TextWrapper>
         <ContainerRow>
         <Title>{name}</Title>
-          <Rating rating={rating}/>
+          <Rating rating={avgRating} isSelect={false}/>
         </ContainerRow>
         <Description>{authorName}</Description>
         <Author>{description}</Author>

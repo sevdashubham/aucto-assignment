@@ -5,7 +5,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 const Rating = ({ count = 5, rating, color = {
   filled: "#ff8b38",
   unfilled: "#DCDCDC",
-}, onRating , isSelect = true}) => {
+}, onRating , isSelect}) => {
   const [hoverRating, setHoverRating] = useState(0);
 
   const getColor = (index) => {
