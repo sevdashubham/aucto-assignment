@@ -27,3 +27,6 @@ following features:
 - [x] use functional programming / TypeScript
 - [x] app consumes API using axios
 - [x] UI components using styled-components.
+- [x] User to be able to add a new review and a rating for an existing book.
+- [x] User to be able to see a list of reviews and a rating for an existing book.
+- [x] User to be able to see an aggregated ratings for a book.

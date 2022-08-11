@@ -25,7 +25,8 @@ export class ReviewsService {
   }
 
   getAverageRatingByBookId(bookId) {
-    return this.getReviewsByBookId(bookId).reduce((total, next) => total + next.rating, 0) / this.reviews.length;
+    const totalReviews = this.getReviewsByBookId(bookId).length;
+    return this.getReviewsByBookId(bookId).reduce((total, next) => total + next.rating, 0) / totalReviews;
   }
 
   getSingleReview(reviewId: string) {
