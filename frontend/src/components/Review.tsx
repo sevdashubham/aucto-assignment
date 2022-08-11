@@ -1,19 +1,26 @@
-import React, { useMemo, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import axios from '../services/axios';
 import Rating from './Rating';
 import styled from 'styled-components';
-import { IReviewCompProps, IReviewProps } from '../interfaces/books';
+import { IReviewProps } from '../interfaces/books';
 import AddReview from './AddReview';
 
-const Review = ({ bookId }: IReviewCompProps) => {
+interface IReviewComp {
+  bookId: string;
+  fetchBooks: () => void;
+}
+
+const Review = ({ bookId, fetchBooks }: IReviewComp) => {
   const [reviews, setReviews] = useState([]);
   const [isAdd, setAdd] = useState(false);
 
-  const fetchReviews = async () => {
+  const fetchReviews = useCallback(async (isHardRefresh) => {
     const { data: reviewsResult } = await axios.get(`/reviews/${bookId}`);
-    await axios.get(`/books`)
     setReviews(reviewsResult);
-  };
+    if (isHardRefresh) {
+      fetchBooks();
+    }
+  }, [bookId]);
 
   const renderReviews = () => {
     return reviews.map((review: IReviewProps) => (
@@ -25,7 +32,7 @@ const Review = ({ bookId }: IReviewCompProps) => {
   };
 
   return <ReviewContainer>
-    <StyledReadMore onClick={fetchReviews}>
+    <StyledReadMore onClick={() => fetchReviews(false)}>
       Read all reviews
     </StyledReadMore>
     <StyledReadMore onClick={() => setAdd(!isAdd)}>
@@ -36,7 +43,7 @@ const Review = ({ bookId }: IReviewCompProps) => {
   </ReviewContainer>;
 };
 
-export default Review;
+export default memo(Review);
 
 const ReviewContainer = styled.div`
   padding-left: 65px;

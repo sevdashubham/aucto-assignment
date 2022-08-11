@@ -1,20 +1,25 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import axios from '../services/axios';
 import Rating from './Rating';
 import styled from 'styled-components';
-import { IReviewCompProps, IReviewProps } from '../interfaces/books';
 
-const AddReview = ({ bookId, fetchReviews, setAdd }: IReviewCompProps) => {
+interface IAddReviewComp {
+  bookId: string;
+  fetchReviews: (boolean) => void;
+  setAdd: (boolean) => void;
+}
+
+const AddReview = ({ bookId, fetchReviews, setAdd }: IAddReviewComp) => {
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [isSuccess, setSuccess] = useState(false);
 
-  const resetValues = () => {
+  const resetValues = useCallback(() => {
     setRating(0);
     setReviewText('');
     setSuccess(false);
     setAdd(false);
-  };
+  }, []);
 
   const addReview = async () => {
     const request = {
@@ -22,10 +27,9 @@ const AddReview = ({ bookId, fetchReviews, setAdd }: IReviewCompProps) => {
       reviewText: reviewText.trim(),
       rating,
     };
-    console.log('request', request);
     const { data: reviewsResult } = await axios.post('/reviews', request);
     if (reviewsResult) {
-      fetchReviews();
+      fetchReviews(true);
       setSuccess(true);
       setTimeout(() => {
         resetValues();
@@ -33,17 +37,17 @@ const AddReview = ({ bookId, fetchReviews, setAdd }: IReviewCompProps) => {
     }
   };
 
-  const handleReviewInput = (event) => {
+  const handleReviewInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value) {
       setReviewText(event.target.value);
     }
-  };
+  }, []);
 
-  const isValidInput = () => {
+  const isValidInput = useCallback(() => {
     if (rating > 0 && reviewText !== '') {
       addReview();
     }
-  };
+  }, [rating, reviewText]);
 
   return <ReviewContainer>
     <ReviewInput rows="3" onChange={handleReviewInput} />
