@@ -5,8 +5,8 @@ import styled from 'styled-components';
 
 interface IAddReviewComp {
   bookId: string;
-  fetchReviews: (boolean) => void;
-  setAdd: (boolean) => void;
+  fetchReviews: (isHardRefresh: boolean) => void;
+  setAdd: (isAdd: boolean) => void;
 }
 
 const AddReview = ({ bookId, fetchReviews, setAdd }: IAddReviewComp) => {
@@ -37,7 +37,7 @@ const AddReview = ({ bookId, fetchReviews, setAdd }: IAddReviewComp) => {
     }
   };
 
-  const handleReviewInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleReviewInput = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value) {
       setReviewText(event.target.value);
     }
@@ -50,7 +50,7 @@ const AddReview = ({ bookId, fetchReviews, setAdd }: IAddReviewComp) => {
   }, [rating, reviewText]);
 
   return <ReviewContainer>
-    <ReviewInput rows="3" onChange={handleReviewInput} />
+    <ReviewInput rows={3} onChange={handleReviewInput} />
     <Rating rating={rating} isSelect onRating={setRating} />
     {isSuccess ? <ReviewText>{'Review submitted successfully'}</ReviewText> :
       <StyledReadMore onClick={isValidInput}>
@@ -71,7 +71,7 @@ const ReviewInput = styled.textarea`
   font-weight: 500;
   padding: 10px 5px;
   margin: 10px 0;
-  font-size: 18px;
+  font-size: 14px;
   background: papayawhip;
   border: none;
   color: palevioletred;

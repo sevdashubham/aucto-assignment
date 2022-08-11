@@ -14,7 +14,7 @@ const Review = ({ bookId, fetchBooks }: IReviewComp) => {
   const [reviews, setReviews] = useState([]);
   const [isAdd, setAdd] = useState(false);
 
-  const fetchReviews = useCallback(async (isHardRefresh) => {
+  const fetchReviews = useCallback(async (isHardRefresh: boolean) => {
     const { data: reviewsResult } = await axios.get(`/reviews/${bookId}`);
     setReviews(reviewsResult);
     if (isHardRefresh) {
@@ -24,7 +24,7 @@ const Review = ({ bookId, fetchBooks }: IReviewComp) => {
 
   const renderReviews = () => {
     return reviews.map((review: IReviewProps) => (
-      <ReviewRow>
+      <ReviewRow key={review.id}>
         <ReviewText><q>{review.reviewText}</q></ReviewText>
         <Rating rating={review.rating} isSelect={false} />
       </ReviewRow>

@@ -2,20 +2,31 @@ import React, { useMemo, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar } from "@fortawesome/free-solid-svg-icons";
 
+interface IRatingComp {
+  count?: number;
+  rating: number;
+  color?: {
+    filled: string,
+    unfilled: string,
+  }
+  onRating?: (rating: number) => void;
+  isSelect: boolean;
+}
+
 const Rating = ({ count = 5, rating, color = {
   filled: "#ff8b38",
   unfilled: "#DCDCDC",
-}, onRating , isSelect}) => {
+}, onRating , isSelect}: IRatingComp) => {
   const [hoverRating, setHoverRating] = useState(0);
 
-  const getColor = (index) => {
+  const getColor = (index: number) => {
     if (hoverRating >= index) {
-      return color.filled;
+      return color?.filled;
     } else if (!hoverRating && rating >= index) {
-      return color.filled;
+      return color?.filled;
     }
 
-    return color.unfilled;
+    return color?.unfilled;
   };
 
   const starRating = useMemo(() => {
@@ -27,7 +38,7 @@ const Rating = ({ count = 5, rating, color = {
           key={idx}
           className="cursor-pointer"
           icon={faStar}
-          onClick={() => isSelect && onRating(idx)}
+          onClick={() => isSelect && onRating?.(idx)}
           style={{ color: getColor(idx) }}
           onMouseEnter={() => isSelect && setHoverRating(idx)}
           onMouseLeave={() => isSelect && setHoverRating(0)}
@@ -37,15 +48,5 @@ const Rating = ({ count = 5, rating, color = {
 
   return <div>{starRating}</div>;
 };
-
-// Rate.propTypes = {
-//   count: PropTypes.number,
-//   rating: PropTypes.number,
-//   onChange: PropTypes.func,
-//   color: {
-//     filled: PropTypes.string,
-//     unfilled: PropTypes.string,
-//   },
-// };
 
 export default Rating;

@@ -43,9 +43,8 @@ const Books: NextPage<IResponseServerSide> = ({ books, authors }) => {
               {stateBooks?.map((book, index) => {
                 const authorIndex = authors.findIndex(author => author.id === book.authorId);
                 return (
-                  <>
+                  <div key={book.id}>
                     <Row
-                      key={book.id}
                       id={book.id}
                       index={index}
                       name={book.name}
@@ -54,7 +53,7 @@ const Books: NextPage<IResponseServerSide> = ({ books, authors }) => {
                       authorName={authorIndex > -1 ? authors[authorIndex].name: ''}
                     />
                     <Review bookId={book.id} fetchBooks={fetchBooks}/>
-                  </>
+                  </div>
                 )
               })}
             </CardRowWrapper>
