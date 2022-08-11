@@ -3,6 +3,7 @@ export interface IBookProps {
   name: string;
   description: string;
   authorId: string;
+  rating: number;
 }
 
 export interface IBookCardProps {
@@ -10,7 +11,12 @@ export interface IBookCardProps {
   name: string;
   description: string;
   authorName: string;
+  rating: number;
   index: number;
+}
+
+export interface IRating {
+  rating: number;
 }
 
 export interface IAuthorProps {

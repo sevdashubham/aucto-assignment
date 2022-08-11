@@ -38,6 +38,7 @@ const Books: NextPage<IResponseServerSide> = ({ books, authors }) => (
                   id={book.id}
                   index={index}
                   name={book.name}
+                  rating={book.rating}
                   description={book.description}
                   authorName={authorIndex > -1 ? authors[authorIndex].name: ''}
                 />
@@ -53,8 +54,9 @@ const Books: NextPage<IResponseServerSide> = ({ books, authors }) => (
 export const getServerSideProps: GetServerSideProps = async () => {
   const { data: books } = await axios.get("/books");
   const { data: authors } = await axios.get("/authors");
+  const booksWithRatings = books.map(book => ({...book, rating: 4}));
   return {
-    props: { books, authors },
+    props: { books: booksWithRatings, authors },
   };
 };
 

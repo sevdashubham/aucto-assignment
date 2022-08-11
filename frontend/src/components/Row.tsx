@@ -2,13 +2,15 @@ import { FC } from 'react';
 import styled from "styled-components";
 
 import { IBookCardProps } from '../interfaces/books';
+import Rating from './Rating';
 
 const Row: FC<IBookCardProps> = ({
                                    id,
                                    name,
                                    description,
                                    authorName,
-                                   index
+                                   index,
+  rating
                                  }: IBookCardProps) => {
 
   return (
@@ -17,7 +19,10 @@ const Row: FC<IBookCardProps> = ({
         <Number>{index + 1}</Number>
       </NumberWrapper>
       <TextWrapper>
+        <ContainerRow>
         <Title>{name}</Title>
+          <Rating rating={rating}/>
+        </ContainerRow>
         <Description>{authorName}</Description>
         <Author>{description}</Author>
       </TextWrapper>
@@ -46,8 +51,14 @@ const Wrapper = styled.div`
 
   :hover {
     background: rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0px 0px 0px 0.5px rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.2);
   }
+`;
+
+const ContainerRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const NumberWrapper = styled.div`

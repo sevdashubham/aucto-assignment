@@ -4,6 +4,10 @@ import { ThemeProvider } from "styled-components";
 
 import themeLight from "../src/themes/light";
 import GlobalStyles from "../src/styles/global";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
+
+config.autoAddCss = false;
 
 const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => (
   <ThemeProvider theme={{ colors: themeLight }}>
